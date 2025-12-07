@@ -122,25 +122,29 @@ void printPath(pair<int,int> exitcell,
 //also all indents with tab are now a group of spaces... so idk what that issue is
 
 bool dfs
-    (int ent_r,int ent_c,
+    (int r,int c,
     const vector<vector<int>>& maze,
     vector<vector<bool>> visited,
     vector<vector<int>>& parent_r,
     vector<vector<int>>& parent_c,
     int exit_r, int exit_c){
 
-    if (maze[r][c] != 0 || visited[r][c]) return false; //not a path if cell isn't an open one
+    if (maze[r][c] == 1 || visited[r][c] ||
+        r < 0 || r >= maze.size() ||
+        c < 0 || c >= maze[0].size())
+        return false;
+    //end con
 
     visited[r][c] = true;
     if (exit_r == r && exit_c == c) return true; //exit found
 
     for(int i = 0; i < 4; i++) { //each direction
-        int nr = r + dc[d];
-        int nc = c + dr[d];
+        int r2 = r + dc[i];
+        int c2 = c + dr[i];
 
-        if (dfs(nr, nc, maze, visited,  parent_r, parent_c, exit_r, exit_c)){ //check for viability
-            parent_r[nr][nc] = r;
-            parent_c[nr][nc] = c;
+        if (dfs(r2, c2, maze, visited,  parent_r, parent_c, exit_r, exit_c)){ //check for viability
+            parent_r[r2][c2] = r;
+            parent_c[r2][c2] = c;
             return true;
         }
     }
